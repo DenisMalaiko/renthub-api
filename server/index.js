@@ -4,15 +4,15 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { graphqlHTTP } = require("express-graphql");
 const { buildSchema } = require("graphql");
+const port = process.env.PORT || 3000;
+/*const CONNECTION_STRING = "mongodb+srv://DenisMalaiko:PDZqTQidkRfcAljb@renthub.de39wzv.mongodb.net/?retryWrites=true&w=majority&appName=renthub";
+const DATABASE = "renthub";*/
 
 const app = express();
 
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
-
-const posts = require('./routes/api/posts');
-
 
 app.use("/graphql", graphqlHTTP({
     schema: buildSchema(`
@@ -31,7 +31,7 @@ app.use("/graphql", graphqlHTTP({
     `),
     rootValue: {
         events: () => {
-            return ["1", "2", "3"]
+            return ["1","2","3"];
         },
         createEvent: (args) => {
             const eventName = args.name;
@@ -41,12 +41,8 @@ app.use("/graphql", graphqlHTTP({
     graphiql: true
 }))
 
+const posts = require('./routes/api/posts');
 app.use('/api/posts', posts);
-
-const port = process.env.PORT || 3000;
-
-/*const CONNECTION_STRING = "mongodb+srv://DenisMalaiko:PDZqTQidkRfcAljb@renthub.de39wzv.mongodb.net/?retryWrites=true&w=majority&appName=renthub";
-const DATABASE = "renthub";*/
 
 app.listen(port, () => {
     console.log(`Server ${port}`);
