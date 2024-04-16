@@ -13,6 +13,10 @@
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.8.0",
+    "graphql-http": "^1.22.1",
+    "graphql-playground-middleware-express": "^1.7.23",
     "mongodb": "^6.5.0"
   },
   "devDependencies": {
