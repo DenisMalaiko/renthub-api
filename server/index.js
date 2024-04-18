@@ -4,13 +4,13 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { graphqlHTTP } = require("express-graphql");
 const { buildSchema } = require("graphql");
+const mongoose = require("mongoose")
 const port = process.env.PORT || 3000;
-/*const CONNECTION_STRING = "mongodb+srv://DenisMalaiko:PDZqTQidkRfcAljb@renthub.de39wzv.mongodb.net/?retryWrites=true&w=majority&appName=renthub";
-const DATABASE = "renthub";*/
+
+const Event = require("../models/event");
 
 const app = express();
 
-const events = [];
 
 // Middleware
 app.use(bodyParser.json());
@@ -51,23 +51,48 @@ app.use("/graphql", graphqlHTTP({
             return events;
         },
         createEvent: (args) => {
-            const event = {
-                _id: Math.random().toString(),
+            console.log("_____________")
+            console.log("CREATE EVENTS")
+            console.log("_____________")
+            const event = new Event({
                 title: args.eventInput.title,
                 description: args.eventInput.description,
                 price: +args.eventInput.price,
-                date: args.eventInput.date
-            }
-            events.push(event)
-            return event;
+                date: new Date(args.eventInput.date)
+            });
+
+            console.log("EVENT")
+            console.log(event)
+            console.log("_____________")
+
+            return event.save()
+                .then((result) => {
+                    console.log("RESULT")
+                    console.log(result)
+                    return {...result._doc}
+                }).catch(error => {
+                    console.log("ERROR !!!")
+                    console.log(error.message)
+                    throw error;
+                });
         }
     },
     graphiql: true
 }))
 
-const posts = require('./routes/api/posts');
-app.use('/api/posts', posts);
+/*const posts = require('./routes/api/posts');
+app.use('/api/posts', posts);*/
 
-app.listen(port, () => {
-    console.log(`Server ${port}`);
-});
+
+mongoose.connect(`mongodb+srv://user2000:1234567890@renthub.de39wzv.mongodb.net/?retryWrites=true&w=majority&appName=renthub
+
+`)
+    .then(() => {
+        console.log("SUCCESS CONNECT WITH MONGODB");
+
+        app.listen(port, () => {
+            console.log(`Server ${port}`);
+        });
+    }).catch((error) => {
+        console.log(error.message)
+    });
