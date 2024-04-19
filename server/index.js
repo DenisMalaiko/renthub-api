@@ -11,7 +11,6 @@ const Event = require("../models/event");
 
 const app = express();
 
-
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
@@ -48,12 +47,17 @@ app.use("/graphql", graphqlHTTP({
     `),
     rootValue: {
         events: () => {
-            return events;
+            return Event.find()
+                .then((events) => {
+                    return events.map(event => {
+                        return {_id: event.id, ...event._doc}
+                    })
+                })
+                .catch((error) => {
+                    throw error
+                })
         },
         createEvent: (args) => {
-            console.log("_____________")
-            console.log("CREATE EVENTS")
-            console.log("_____________")
             const event = new Event({
                 title: args.eventInput.title,
                 description: args.eventInput.description,
@@ -61,18 +65,10 @@ app.use("/graphql", graphqlHTTP({
                 date: new Date(args.eventInput.date)
             });
 
-            console.log("EVENT")
-            console.log(event)
-            console.log("_____________")
-
             return event.save()
                 .then((result) => {
-                    console.log("RESULT")
-                    console.log(result)
-                    return {...result._doc}
+                    return {_id: result.id, ...result._doc}
                 }).catch(error => {
-                    console.log("ERROR !!!")
-                    console.log(error.message)
                     throw error;
                 });
         }
@@ -83,13 +79,12 @@ app.use("/graphql", graphqlHTTP({
 /*const posts = require('./routes/api/posts');
 app.use('/api/posts', posts);*/
 
-
-mongoose.connect(`mongodb+srv://user2000:1234567890@renthub.de39wzv.mongodb.net/?retryWrites=true&w=majority&appName=renthub
-
-`)
+const options = {useNewUrlParser: true, useUnifiedTopology: true};
+mongoose.connect(
+    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@renthub.de39wzv.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority&appName=${process.env.MONGO_DB}`,
+    options
+)
     .then(() => {
-        console.log("SUCCESS CONNECT WITH MONGODB");
-
         app.listen(port, () => {
             console.log(`Server ${port}`);
         });
