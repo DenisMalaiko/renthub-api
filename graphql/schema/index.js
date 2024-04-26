@@ -20,7 +20,7 @@ module.exports = buildSchema(`
         type Booking {
             _id: ID!
             event: Event!
-            user: Event!
+            user: User!
             createdAt: String!
             updatedAt: String!
         }
