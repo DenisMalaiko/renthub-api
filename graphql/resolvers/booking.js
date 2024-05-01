@@ -13,11 +13,14 @@ module.exports =  {
             throw err
         }
     },
-    bookEvent: async (args) => {
+    bookEvent: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error("Unauthenticated!")
+        }
         try {
             const fetchedEvent = await Event.findOne({_id: args.eventId});
             const booking = new Booking({
-                user: "6624f253b3a0750798e3ba90",
+                user:  req.userId,
                 event: fetchedEvent
             });
             const result = await booking.save();
@@ -26,7 +29,10 @@ module.exports =  {
             throw err;
         }
     },
-    cancelBooking: async (args) => {
+    cancelBooking: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error("Unauthenticated!")
+        }
         try {
             const booking = await Booking.findById(args.bookingId).populate("event");
             const event = transformEvent(booking.event);

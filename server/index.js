@@ -4,6 +4,7 @@ const cors = require("cors");
 const { graphqlHTTP } = require("express-graphql");
 const mongoose = require("mongoose")
 const port = process.env.PORT || 3000;
+const isAuth = require("../middleware/is-auth");
 
 const graphQlSchema = require("../graphql/schema/index");
 const graphQlResolvers = require("../graphql/resolvers/index");
@@ -12,6 +13,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use(isAuth)
 
 app.use("/graphql", graphqlHTTP({
     schema: graphQlSchema,
