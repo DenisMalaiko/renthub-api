@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { graphqlHTTP } = require("express-graphql");
 const mongoose = require("mongoose")
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const isAuth = require("../middleware/is-auth");
 
 const graphQlSchema = require("../graphql/schema/index");
@@ -20,6 +20,20 @@ app.use("/graphql", graphqlHTTP({
     rootValue: graphQlResolvers,
     graphiql: true
 }))
+
+app.get('/searchCity', async (req, res) => {
+    const city = req.query.city;
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(city)}&types=locality&key=AIzaSyDOU3_lOeKF2rVPCnHI9OejSOc90KLBTsY`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        console.error('Error fetching place:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 /*const posts = require('./routes/api/posts');
 app.use('/api/posts', posts);*/
