@@ -28,7 +28,14 @@ app.get('/searchCity', async (req, res) => {
     try {
         const response = await fetch(url);
         const data = await response.json();
-        res.json(data);
+        const result = data.results.map((x) => {
+            return {
+                cityId: x.place_id,
+                cityName: x.name,
+                cityFullName: x.formatted_address
+            }
+        })
+        res.json(result);
     } catch (error) {
         console.error('Error fetching place:', error);
         res.status(500).json({ error: 'Internal Server Error' });

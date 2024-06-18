@@ -3,8 +3,20 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    login: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
+        required: true
+    },
+    city: {
+        type: Object,
         required: true
     },
     password: {
@@ -16,7 +28,7 @@ const userSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: "Event"
         }
-    ]
+    ],
 });
 
 module.exports = mongoose.model("User", userSchema);
