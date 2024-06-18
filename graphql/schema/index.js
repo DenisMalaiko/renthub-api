@@ -12,9 +12,18 @@ module.exports = buildSchema(`
         
         type User {
             _id: ID
+            name: String!
+            login: String!
             email: String!
+            city: City!
             password: String
             createdEvents: [Event!]
+        }
+        
+        type City {
+            cityId: String!
+            cityName: String!
+            cityFullName: String!
         }
         
         type Booking {
