@@ -47,8 +47,17 @@ module.exports = buildSchema(`
             date: String!
         }
         
+        input CityInput {
+            cityId: String!
+            cityName: String!
+            cityFullName: String!
+        }
+
         input UserInput {
+            name: String!
+            login: String!
             email: String!
+            city: CityInput!
             password: String!
             createdEvents: [String]
         }
