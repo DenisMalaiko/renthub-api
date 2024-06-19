@@ -30,7 +30,10 @@ module.exports =  {
             const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
 
             const user = await new User({
+                name: args.userInput.name,
+                login: args.userInput.login,
                 email: args.userInput.email,
+                city: args.userInput.city,
                 password: hashedPassword,
             });
 
