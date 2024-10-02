@@ -32,18 +32,25 @@ app.use("/graphql", graphqlHTTP({
 
 app.get('/searchCity', async (req, res) => {
     const city = req.query.city;
-    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(city)}&types=locality&key=AIzaSyDOU3_lOeKF2rVPCnHI9OejSOc90KLBTsY`;
+    console.log("CITY ", city)
+    const url = `http://api.geonames.org/searchJSON?q=${city}&username=Renthub`;
 
     try {
         const response = await fetch(url);
         const data = await response.json();
-        const result = data.results.map((x) => {
-            return {
-                cityId: x.place_id,
-                cityName: x.name,
-                cityFullName: x.formatted_address
-            }
-        })
+        const result = data.geonames
+            .map((x) => {
+                return {
+                    cityId: x.geonameId,
+                    cityName: x.name,
+                    countryId: x.countryId,
+                    countryName: x.countryName,
+                    fullAddress: `${x.name}, ${x.countryName}`
+                }
+            })
+            .filter((item, index, self) => index === self.findIndex((t) => t.fullAddress === item.fullAddress))
+            .slice(0, 5);
+
         res.json(result);
     } catch (error) {
         console.error('Error fetching place:', error);
