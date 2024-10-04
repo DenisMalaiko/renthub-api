@@ -23,7 +23,9 @@ module.exports = buildSchema(`
         type City {
             cityId: String!
             cityName: String!
-            cityFullName: String!
+            countryId: String!
+            countryName: String!
+            fullAddress: String!
         }
         
         type Booking {
@@ -50,7 +52,9 @@ module.exports = buildSchema(`
         input CityInput {
             cityId: String!
             cityName: String!
-            cityFullName: String!
+            countryId: String!
+            countryName: String!
+            fullAddress: String!
         }
 
         input UserInput {
