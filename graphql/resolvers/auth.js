@@ -67,6 +67,7 @@ module.exports =  {
             name: user.name,
             login: user.login,
             email: user.email,
+            city: user.city
         }
     }
 };
