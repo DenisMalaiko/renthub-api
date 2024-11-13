@@ -42,6 +42,14 @@ module.exports = buildSchema(`
             tokenExpiration: Int!
         }
         
+        type CityType {
+            cityId: String!
+            cityName: String!
+            countryId: String!
+            countryName: String!
+            fullAddress: String!
+        }
+        
         type UserResponse {
             _id: ID
             token: String!
@@ -49,8 +57,12 @@ module.exports = buildSchema(`
             name: String!
             login: String!
             email: String!
+            city: CityType!
         }
        
+        
+        
+        
         
         input EventInput {
             title: String!
