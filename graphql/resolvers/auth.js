@@ -48,6 +48,32 @@ module.exports =  {
             throw error;
         }
     },
+    updateUser: async (args) => {
+        if(!req.isAuth) {
+            throw new Error("Unauthenticated!")
+        }
+
+        try {
+            const user = await User.findByIdAndUpdate(
+                args.userUpdateInput._id,
+                {
+                    name: args.userUpdateInput.name,
+                    login: args.userUpdateInput.login,
+                    email: args.userUpdateInput.email,
+                    city: args.userUpdateInput.city,
+                },
+                { new: true }
+            );
+
+            if (!user) {
+                throw new Error("User not found!");
+            }
+
+            return user;
+        } catch (error) {
+            throw error;
+        }
+    },
     login: async ({ email, password }) => {
         const user = await User.findOne({ email: email });
         if(!user) {
