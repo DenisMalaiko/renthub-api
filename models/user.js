@@ -29,6 +29,12 @@ const userSchema = new Schema({
             ref: "Event"
         }
     ],
+    products: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Product"
+        }
+    ]
 });
 
 module.exports = mongoose.model("User", userSchema);

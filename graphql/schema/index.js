@@ -59,6 +59,19 @@ module.exports = buildSchema(`
             email: String!
             city: CityType!
         }
+        
+        type Category {
+            _id: ID
+            name: String!
+        }
+        
+        type Product {
+            _id: ID
+            name: String!
+            price: Float!
+            user: UserResponse!
+            categories: [Category!]
+        }
        
         
         
@@ -96,11 +109,20 @@ module.exports = buildSchema(`
             city: CityInput!
         }
         
+        input CategoryInput {
+            name: String!
+        }
+       
+        
+        
+        
         type RootQuery {
             events: [Event!]!
             users: [User!]!
             bookings: [Booking!]!
             login(email: String!, password: String!): UserResponse!
+            products: [Product!]!
+            categories: [Category!]!
         }
         
         type RootMutation {
@@ -109,6 +131,8 @@ module.exports = buildSchema(`
             updateUser(userUpdateInput: UserUpdateInput): User
             bookEvent(eventId: ID): Booking!
             cancelBooking(bookingId: ID!): Event
+            
+            createCategory(categoryInput: CategoryInput): Category
         }
         
         schema {
