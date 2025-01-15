@@ -8,19 +8,13 @@ const productSchema = new Schema({
         required: true
     },
     price: {
-        type: Number,
+      type: Number,
+      required: true
+    },
+    userId: {
+        type: String,
         required: true
     },
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: "User"
-    },
-    categories: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Category"
-        }
-    ],
 });
 
 module.exports = mongoose.model("Product", productSchema);

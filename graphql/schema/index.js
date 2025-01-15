@@ -69,8 +69,7 @@ module.exports = buildSchema(`
             _id: ID
             name: String!
             price: Float!
-            user: UserResponse!
-            categories: [Category!]
+            userId: ID!
         }
        
         
@@ -112,6 +111,12 @@ module.exports = buildSchema(`
         input CategoryInput {
             name: String!
         }
+        
+        input ProductInput {
+            name: String!
+            price: Float!
+            userId: String!
+        }
        
         
         
@@ -121,7 +126,7 @@ module.exports = buildSchema(`
             users: [User!]!
             bookings: [Booking!]!
             login(email: String!, password: String!): UserResponse!
-            products: [Product!]!
+            products(userId: String!): [Product!]!
             categories: [Category!]!
         }
         
@@ -133,6 +138,7 @@ module.exports = buildSchema(`
             cancelBooking(bookingId: ID!): Event
             
             createCategory(categoryInput: CategoryInput): Category
+            createProduct(productInput: ProductInput): Product
         }
         
         schema {
