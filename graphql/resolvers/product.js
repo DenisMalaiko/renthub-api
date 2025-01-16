@@ -1,12 +1,18 @@
 const Product = require("../../models/product");
 
 module.exports = {
-    products: async ({ userId }) => {
+    products: async () => {
+        try {
+            console.log("GET PRODUCTS")
+            return await Product.find();
+        } catch (err) {
+            throw err;
+        }
+    },
+    productsByUser: async ({ userId }) => {
         try {
             console.log("GET PRODUCTS BY USER ID ", userId)
-
-            const products = await Product.find({ userId: userId });
-            return products;
+            return await Product.find({ userId: userId });
         } catch (err) {
             throw err;
         }
