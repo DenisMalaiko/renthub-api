@@ -126,7 +126,9 @@ module.exports = buildSchema(`
             users: [User!]!
             bookings: [Booking!]!
             login(email: String!, password: String!): UserResponse!
-            products(userId: String!): [Product!]!
+            
+            products: [Product!]!
+            productsByUser(userId: String!): [Product!]!
             categories: [Category!]!
         }
         
