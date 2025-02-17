@@ -48,10 +48,11 @@ module.exports =  {
             throw error;
         }
     },
-    updateUser: async (args) => {
-        if(!req.isAuth) {
+    updateUser: async (args, req) => {
+
+        /*if(!req.isAuth) {
             throw new Error("Unauthenticated!")
-        }
+        }*/
 
         try {
             const user = await User.findByIdAndUpdate(
