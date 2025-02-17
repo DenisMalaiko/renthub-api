@@ -1,5 +1,6 @@
 const Event = require("../../models/event");
 const User = require("../../models/user");
+const Category = require("../../models/category");
 const {dateToString} = require("../../helpers/date");
 
 const transformEvent = event => {
@@ -19,6 +20,15 @@ const transformBooking = booking => {
         event: singleEvent.bind(this, booking._doc.event),
         createdAt: dateToString(booking._doc.createdAt),
         updatedAt: dateToString(booking._doc.updatedAt)
+    }
+}
+
+const transformProduct = product => {
+    return {
+        id: product.id,
+        ...product._doc,
+        user: user.bind(this, product._doc.user),
+        categories: category.bind(this, product._doc.categories)
     }
 }
 
@@ -48,10 +58,21 @@ const user = async userId => {
         return {
             ...user._doc,
             _id: user.id,
-            createdEvents: events.bind(this, user._doc.createdEvents )
         }
     } catch (error) {
-        throw error
+        throw error;
+    }
+}
+
+const category = async categoriesIds => {
+    try {
+        const categories = await Category.find({ _id: { $in: categoriesIds } });
+        return categories.map(category => ({
+            ...category._doc,
+            _id: category.id
+        }));
+    } catch (error) {
+        throw error;
     }
 }
 
@@ -60,3 +81,4 @@ exports.events = events;
 exports.singleEvent = singleEvent;
 exports.transformEvent = transformEvent;
 exports.transformBooking = transformBooking;
+exports.transformProduct = transformProduct;
