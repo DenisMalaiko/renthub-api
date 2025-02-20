@@ -1,8 +1,8 @@
-const Booking = require("../../models/booking");
-const Event = require("../../models/event");
-const { transformBooking, transformEvent} = require("../resolvers/merge");
+import Booking from "../../models/booking.js";
+import Event from "../../models/event.js";
+import {transformBooking, transformEvent} from "./merge.js";
 
-module.exports =  {
+const bookingResolver = {
     bookings: async () => {
         try {
             const bookings = await Booking.find();
@@ -43,3 +43,5 @@ module.exports =  {
         }
     }
 };
+
+export default bookingResolver;

@@ -1,7 +1,7 @@
-const Product = require("../../models/product");
-const {transformProduct} = require("./merge");
+import Product from "../../models/product.js";
+import {transformProduct} from "./merge.js";
 
-module.exports = {
+const productResolver = {
     products: async () => {
         try {
             const products = await Product.find();
@@ -14,7 +14,7 @@ module.exports = {
     },
     productsByUser: async ({ userId }) => {
         try {
-            const products = await Product.find({ userId: userId });
+            const products = await Product.find({ user: userId });
             return products.map(product => {
                 return transformProduct(product)
             });
@@ -24,11 +24,16 @@ module.exports = {
     },
     createProduct: async (args, req) => {
         try {
+            console.log("--------")
+            console.log("START createProduct ", args.productInput)
+            console.log("--------")
+
             const product = await new Product({
                 name: args.productInput.name,
                 price: args.productInput.price,
                 user: args.productInput.user,
                 categories: args.productInput.categories,
+                photo: args.productInput.photo
             });
 
             const result = await product.save();
@@ -38,3 +43,5 @@ module.exports = {
         }
     },
 }
+
+export default productResolver;

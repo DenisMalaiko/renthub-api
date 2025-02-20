@@ -1,7 +1,6 @@
-const Category = require("../../models/category");
-const {transformBooking} = require("./merge");
+import Category from "../../models/category.js";
 
-module.exports = {
+const categoryResolver = {
     categories: async () => {
         try {
             const categories = await Category.find();
@@ -36,3 +35,5 @@ module.exports = {
         }
     }
 }
+
+export default categoryResolver;

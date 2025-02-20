@@ -1,9 +1,9 @@
-const Event = require("../../models/event");
-const User = require("../../models/user");
-const { dateToString } = require("../../helpers/date");
-const { transformEvent } = require("../resolvers/merge");
+import Event from "../../models/event.js";
+import User from "../../models/user.js";
+import {dateToString} from "../../helpers/date.js";
+import {transformEvent} from "./merge.js";
 
-module.exports = {
+const eventsResolver = {
     events: async () => {
         try {
             const events = await Event.find();
@@ -47,3 +47,5 @@ module.exports = {
         }
     }
 };
+
+export default eventsResolver;

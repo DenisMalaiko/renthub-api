@@ -1,6 +1,15 @@
-const { buildSchema } = require("graphql");
+import { buildSchema } from "graphql";
 
-module.exports = buildSchema(`
+export default buildSchema(`
+        scalar Upload
+        
+        type File {
+            _id: ID!
+            filename: String!
+            mimetype: String!
+            path: String!
+        }
+
         type Event {
             _id: ID
             title: String!
@@ -112,12 +121,13 @@ module.exports = buildSchema(`
         input CategoryInput {
             name: String!
         }
-        
+
         input ProductInput {
             name: String!
             price: Float!
             user: String!
             categories: [String]
+            photo: Upload!
         }
        
         
@@ -132,6 +142,8 @@ module.exports = buildSchema(`
             products: [Product!]!
             productsByUser(userId: String!): [Product!]!
             categories: [Category!]!
+            
+            getFiles: [File]
         }
         
         type RootMutation {
@@ -143,6 +155,8 @@ module.exports = buildSchema(`
             
             createCategory(categoryInput: CategoryInput): Category
             createProduct(productInput: ProductInput): Product
+            
+            uploadFile(file: Upload!): File!
         }
         
         schema {
