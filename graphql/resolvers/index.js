@@ -1,16 +1,19 @@
-const authResolver = require("./auth");
-const bookingResolver = require("./booking");
-const eventsResolver = require("./events");
-const categoryResolver = require("./caregory");
-const productResolver = require("./product")
+import authResolver from "./auth.js";
+import bookingResolver from "./booking.js";
+import categoryResolver from "./caregory.js";
+import eventsResolver from "./events.js";
+import productResolver from "./product.js";
+import fileResolver from "./file.js";
 
 
-const rootResolver ={
+
+const rootResolver = {
     ...authResolver,
     ...bookingResolver,
-    ...eventsResolver,
     ...categoryResolver,
-    ...productResolver
+    ...eventsResolver,
+    ...productResolver,
+    ...fileResolver,
 }
 
-module.exports = rootResolver;
+export default rootResolver;

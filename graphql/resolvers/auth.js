@@ -1,9 +1,9 @@
-const User = require("../../models/user");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { events } = require("../resolvers/merge");
+import User from "../../models/user.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { events } from "./merge.js";
 
-module.exports =  {
+const authResolver = {
     users: async () => {
         try {
             const users = await User.find();
@@ -98,3 +98,5 @@ module.exports =  {
         }
     }
 };
+
+export default authResolver;
