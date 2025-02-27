@@ -19,10 +19,6 @@ const productSchema = new Schema({
         type: [Schema.Types.ObjectId],
         ref: "Category"
     },
-    photo: {
-        type: String,
-        required: true
-    }
 });
 
 export default mongoose.model("Product", productSchema);

@@ -127,7 +127,6 @@ export default buildSchema(`
             price: Float!
             user: String!
             categories: [String]
-            photo: Upload!
         }
        
         
@@ -154,7 +153,7 @@ export default buildSchema(`
             cancelBooking(bookingId: ID!): Event
             
             createCategory(categoryInput: CategoryInput): Category
-            createProduct(productInput: ProductInput): Product
+            createProduct(productInput: ProductInput!): Product!
             
             uploadFile(file: Upload!): File!
         }

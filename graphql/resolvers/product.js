@@ -24,16 +24,11 @@ const productResolver = {
     },
     createProduct: async (args, req) => {
         try {
-            console.log("--------")
-            console.log("START createProduct ", args.productInput)
-            console.log("--------")
-
             const product = await new Product({
                 name: args.productInput.name,
                 price: args.productInput.price,
                 user: args.productInput.user,
                 categories: args.productInput.categories,
-                photo: args.productInput.photo
             });
 
             const result = await product.save();
