@@ -1,14 +1,15 @@
-import { buildSchema } from "graphql";
+import { gql } from "apollo-server-express";
 
-export default buildSchema(`
+const typeDefs = gql`
         scalar Upload
         
-        type File {
-            _id: ID!
+        type Photo {
+            id: ID!
             filename: String!
-            mimetype: String!
-            path: String!
         }
+  
+  
+    
 
         type Event {
             _id: ID
@@ -128,24 +129,24 @@ export default buildSchema(`
             user: String!
             categories: [String]
         }
+        
        
         
         
         
-        type RootQuery {
+        type Query {
             events: [Event!]!
             users: [User!]!
             bookings: [Booking!]!
-            login(email: String!, password: String!): UserResponse!
+            login(email: String!, password: String!): UserResponse
             
             products: [Product!]!
             productsByUser(userId: String!): [Product!]!
             categories: [Category!]!
             
-            getFiles: [File]
         }
         
-        type RootMutation {
+        type Mutation {
             createEvent(eventInput: EventInput): Event
             createUser(userInput: UserInput): User
             updateUser(userUpdateInput: UserUpdateInput): User
@@ -155,11 +156,13 @@ export default buildSchema(`
             createCategory(categoryInput: CategoryInput): Category
             createProduct(productInput: ProductInput!): Product!
             
-            uploadFile(file: Upload!): File!
+            uploadPhoto(file: Upload!): Photo!
         }
         
         schema {
-            query: RootQuery
-            mutation: RootMutation
+            query: Query
+            mutation: Mutation
         }
-    `)
+    `;
+
+export default typeDefs;

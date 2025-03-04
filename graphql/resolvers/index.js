@@ -3,17 +3,23 @@ import bookingResolver from "./booking.js";
 import categoryResolver from "./caregory.js";
 import eventsResolver from "./events.js";
 import productResolver from "./product.js";
-import fileResolver from "./file.js";
-
-
+import photoResolver from "./photo.js";
 
 const rootResolver = {
-    ...authResolver,
+    Query: {
+        ...productResolver.Query,
+        ...authResolver.Query,
+        ...categoryResolver.Query
+    },
+    Mutation: {
+        ...productResolver.Mutation,
+        ...authResolver.Mutation,
+        ...categoryResolver.Mutation
+    }
+/*
     ...bookingResolver,
-    ...categoryResolver,
     ...eventsResolver,
-    ...productResolver,
-    ...fileResolver,
+    ...photoResolver*/
 }
 
 export default rootResolver;
