@@ -47,25 +47,21 @@ const authResolver = {
         }
     },
     Mutation: {
-        createUser: async (args) => {
-            console.log("--------")
-            console.log("CREATE USER")
-            console.log("--------")
-
+        createUser: async (_, { userInput }) => {
             try {
-                const existingUser = await User.findOne({email: args.userInput.email});
+                const existingUser = await User.findOne({email: userInput.email});
 
                 if (existingUser) {
                     throw new Error("User exists already.")
                 }
 
-                const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
+                const hashedPassword = await bcrypt.hash(userInput.password, 12);
 
                 const user = await new User({
-                    name: args.userInput.name,
-                    login: args.userInput.login,
-                    email: args.userInput.email,
-                    city: args.userInput.city,
+                    name: userInput.name,
+                    login: userInput.login,
+                    email: userInput.email,
+                    city: userInput.city,
                     password: hashedPassword,
                 });
 
@@ -80,20 +76,15 @@ const authResolver = {
                 throw error;
             }
         },
-        updateUser: async (args, req) => {
-
-            /*if(!req.isAuth) {
-                throw new Error("Unauthenticated!")
-            }*/
-
+        updateUser: async (_, { userUpdateInput }) => {
             try {
                 const user = await User.findByIdAndUpdate(
-                    args.userUpdateInput._id,
+                    userUpdateInput._id,
                     {
-                        name: args.userUpdateInput.name,
-                        login: args.userUpdateInput.login,
-                        email: args.userUpdateInput.email,
-                        city: args.userUpdateInput.city,
+                        name: userUpdateInput.name,
+                        login: userUpdateInput.login,
+                        email: userUpdateInput.email,
+                        city: userUpdateInput.city,
                     },
                     {new: true}
                 );

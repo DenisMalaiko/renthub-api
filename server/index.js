@@ -23,7 +23,10 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 }));
 app.use(isAuth);
-app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 1 }));
+app.use(graphqlUploadExpress({
+    maxFileSize: 10000000,
+    maxFiles: 1
+}));
 
 /*app.use("/graphql", graphqlHTTP({
     schema: graphQlSchema,
@@ -57,3 +60,32 @@ mongoose.connect(
         })
     })
     .catch((error) => console.log(error.message));
+
+
+app.get('/searchCity', async (req, res) => {
+    const city = req.query.city;
+    console.log("CITY ", city)
+    const url = `http://api.geonames.org/searchJSON?q=${city}&username=Renthub`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const result = data.geonames
+            .map((x) => {
+                return {
+                    cityId: x.geonameId.toString(),
+                    cityName: x.name,
+                    countryId: x.countryId,
+                    countryName: x.countryName,
+                    fullAddress: `${x.name}, ${x.countryName}`
+                }
+            })
+            .filter((item, index, self) => index === self.findIndex((t) => t.fullAddress === item.fullAddress))
+            .slice(0, 5);
+
+        res.json(result);
+    } catch (error) {
+        console.error('Error fetching place:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
