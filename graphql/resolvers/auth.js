@@ -76,7 +76,13 @@ const authResolver = {
                 throw error;
             }
         },
-        updateUser: async (_, { userUpdateInput }) => {
+        updateUser: async (_, { userUpdateInput }, context) => {
+            const { req } = context;
+
+            if(!req.isAuth) {
+                throw new Error("Unauthenticated!")
+            }
+
             try {
                 const user = await User.findByIdAndUpdate(
                     userUpdateInput._id,

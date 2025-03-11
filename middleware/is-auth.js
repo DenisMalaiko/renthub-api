@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 
 const isAuth = (req, res, next) => {
+    console.log("AUTH MIDDLEWARE")
     const authHeader = req.get("Authorization");
     if(!authHeader) {
         req.isAuth = false;
@@ -22,6 +23,7 @@ const isAuth = (req, res, next) => {
         req.isAuth = false;
         return next();
     }
+    console.log("SUCCESS GET TOKEN")
     req.isAuth = true;
     req.userId = decodedToken.userId;
     next();

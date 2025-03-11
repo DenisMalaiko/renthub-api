@@ -13,7 +13,13 @@ const productResolver = {
                 throw err;
             }
         },
-        productsByUser: async (_, { userId }) => {
+        productsByUser: async (_, { userId }, context) => {
+            const { req } = context;
+
+            if(!req.isAuth) {
+                throw new Error("Unauthenticated!")
+            }
+
             try {
                 const products = await Product.find({ user: userId });
                 return products.map(product => {
@@ -25,13 +31,19 @@ const productResolver = {
         },
     },
     Mutation: {
-        createProduct: async (args, req) => {
+        createProduct: async (_, { productInput }, context) => {
+            const { req } = context;
+
+            if(!req.isAuth) {
+                throw new Error("Unauthenticated!")
+            }
+
             try {
                 const product = await new Product({
-                    name: args.productInput.name,
-                    price: args.productInput.price,
-                    user: args.productInput.user,
-                    categories: args.productInput.categories,
+                    name: productInput.name,
+                    price: productInput.price,
+                    user: productInput.user,
+                    categories: productInput.categories,
                 });
 
                 const result = await product.save();
