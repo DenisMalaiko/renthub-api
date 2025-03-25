@@ -6,6 +6,7 @@ const typeDefs = gql`
         type Photo {
             id: ID!
             filename: String!
+            url: String!
         }
   
   
@@ -156,7 +157,7 @@ const typeDefs = gql`
             createCategory(categoryInput: CategoryInput): Category
             createProduct(productInput: ProductInput!): Product!
             
-            uploadPhoto(file: Upload!): Photo!
+            uploadPhoto(photo: Upload!): Photo!
         }
         
         schema {

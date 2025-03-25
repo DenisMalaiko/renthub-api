@@ -2,12 +2,9 @@ import express from "express";
 import cors from "cors";
 import { graphqlHTTP } from "express-graphql";
 import mongoose from "mongoose";
-
 import { ApolloServer} from "apollo-server-express";
 import { graphqlUploadExpress } from "graphql-upload";
-
 import { GridFSBucket } from "mongodb";
-
 //import graphQlSchema from "../graphql/schema/index.js";
 import typeDefs from "../graphql/schema/index.js";
 import graphQlResolvers from "../graphql/resolvers/index.js";
@@ -16,17 +13,12 @@ import isAuth from "../middleware/is-auth.js";
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.use(express.json());
-app.use(cors({
-    origin: "*",
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-}));
-app.use(isAuth);
 app.use(graphqlUploadExpress({
     maxFileSize: 10000000,
     maxFiles: 1
 }));
+app.use(express.json());
+app.use(isAuth);
 
 /*app.use("/graphql", graphqlHTTP({
     schema: graphQlSchema,
@@ -53,7 +45,15 @@ mongoose.connect(
         });
 
         await server.start();
-        server.applyMiddleware({ app });
+
+        server.applyMiddleware({
+            app,
+            cors: {
+                origin: "http://localhost:3000", // Вказуємо конкретний origin
+                credentials: true, // Дозволяємо куки та заголовки авторизації
+                allowedHeaders: ["Content-Type", "Authorization", "Apollo-Require-Preflight"],
+            },
+        });
 
         app.listen(port, () => {
             console.log(`Server running on port ${port}`)
@@ -61,6 +61,25 @@ mongoose.connect(
     })
     .catch((error) => console.log(error.message));
 
+app.get('/image/:id', async (req, res) => {
+    try {
+        const fileId = new mongoose.Types.ObjectId(req.params.id);
+        const gfs = global.gfs;
+
+        gfs.find({ _id: fileId }).toArray((err, files) => {
+            if (!files || files.length === 0) {
+                return res.status(404).json({ message: "Файл не найден" });
+            }
+
+            res.set("Content-Type", files[0].contentType);
+            const readStream = gfs.openDownloadStream(fileId);
+            readStream.pipe(res);
+        });
+    } catch (error) {
+        console.error("Ошибка при получении файла:", error);
+        res.status(500).json({ error: "Внутренняя ошибка сервера" });
+    }
+});
 
 app.get('/searchCity', async (req, res) => {
     const city = req.query.city;
