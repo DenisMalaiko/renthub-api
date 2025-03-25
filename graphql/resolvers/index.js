@@ -9,12 +9,13 @@ const rootResolver = {
     Query: {
         ...productResolver.Query,
         ...authResolver.Query,
-        ...categoryResolver.Query
+        ...categoryResolver.Query,
     },
     Mutation: {
         ...productResolver.Mutation,
         ...authResolver.Mutation,
-        ...categoryResolver.Mutation
+        ...categoryResolver.Mutation,
+        ...photoResolver.Mutation
     }
 /*
     ...bookingResolver,
