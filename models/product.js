@@ -11,6 +11,10 @@ const productSchema = new Schema({
       type: Number,
       required: true
     },
+    photo: {
+      type: String,
+      required: false
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: "User"

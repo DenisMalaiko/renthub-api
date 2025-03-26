@@ -7,10 +7,7 @@ const typeDefs = gql`
             id: ID!
             filename: String!
             url: String!
-        }
-  
-  
-    
+        }    
 
         type Event {
             _id: ID
@@ -80,6 +77,7 @@ const typeDefs = gql`
             _id: ID
             name: String!
             price: Float!
+            photo: String!
             user: User!
             categories: [Category!]
         }
@@ -127,6 +125,7 @@ const typeDefs = gql`
         input ProductInput {
             name: String!
             price: Float!
+            photo: String!
             user: String!
             categories: [String]
         }
