@@ -44,6 +44,7 @@ const productResolver = {
                     price: productInput.price,
                     user: productInput.user,
                     categories: productInput.categories,
+                    photo: productInput.photo
                 });
 
                 const result = await product.save();
