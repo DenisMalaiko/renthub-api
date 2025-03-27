@@ -8,15 +8,6 @@ const typeDefs = gql`
             filename: String!
             url: String!
         }    
-
-        type Event {
-            _id: ID
-            title: String!
-            description: String!
-            price: Float!
-            date: String!
-            creator: User!
-        } 
         
         type User {
             _id: ID
@@ -25,7 +16,6 @@ const typeDefs = gql`
             email: String!
             city: City!
             password: String
-            createdEvents: [Event!]
         }
         
         type City {
@@ -35,14 +25,7 @@ const typeDefs = gql`
             countryName: String!
             fullAddress: String!
         }
-        
-        type Booking {
-            _id: ID!
-            event: Event!
-            user: User!
-            createdAt: String!
-            updatedAt: String!
-        }
+       
         
         type AuthData {
             userId: ID!
@@ -81,17 +64,15 @@ const typeDefs = gql`
             user: User!
             categories: [Category!]
         }
+        
+        type Response {
+            status: Float!
+            message: String!
+        }
        
         
         
-        
-        
-        input EventInput {
-            title: String!
-            description: String!
-            price: Float!
-            date: String!
-        }
+       
         
         input CityInput {
             cityId: String!
@@ -107,7 +88,6 @@ const typeDefs = gql`
             email: String!
             city: CityInput!
             password: String!
-            createdEvents: [String]
         }
         
         input UserUpdateInput {
@@ -135,26 +115,23 @@ const typeDefs = gql`
         
         
         type Query {
-            events: [Event!]!
             users: [User!]!
-            bookings: [Booking!]!
             login(email: String!, password: String!): UserResponse
             
             products: [Product!]!
             productsByUser(userId: String!): [Product!]!
-            categories: [Category!]!
             
+            categories: [Category!]!
         }
         
         type Mutation {
-            createEvent(eventInput: EventInput): Event
             createUser(userInput: UserInput): User
             updateUser(userUpdateInput: UserUpdateInput): User
-            bookEvent(eventId: ID): Booking!
-            cancelBooking(bookingId: ID!): Event
             
             createCategory(categoryInput: CategoryInput): Category
+            
             createProduct(productInput: ProductInput!): Product!
+            deleteProduct(productId: String!): Response!
             
             uploadPhoto(photo: Upload!): Photo!
         }

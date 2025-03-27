@@ -23,12 +23,6 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    createdEvents: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Event"
-        }
-    ],
     products: [
         {
             type: Schema.Types.ObjectId,

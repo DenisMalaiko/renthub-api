@@ -1,7 +1,5 @@
 import authResolver from "./auth.js";
-import bookingResolver from "./booking.js";
 import categoryResolver from "./caregory.js";
-import eventsResolver from "./events.js";
 import productResolver from "./product.js";
 import photoResolver from "./photo.js";
 
@@ -17,10 +15,6 @@ const rootResolver = {
         ...categoryResolver.Mutation,
         ...photoResolver.Mutation
     }
-/*
-    ...bookingResolver,
-    ...eventsResolver,
-    ...photoResolver*/
 }
 
 export default rootResolver;

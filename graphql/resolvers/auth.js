@@ -1,7 +1,6 @@
 import User from "../../models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { events } from "./merge.js";
 
 const authResolver = {
     Query: {
@@ -13,7 +12,6 @@ const authResolver = {
                     return {
                         ...user._doc,
                         _id: user.id,
-                        createdEvents: events.bind(this, user._doc.createdEvents)
                     }
                 })
             } catch (error) {
