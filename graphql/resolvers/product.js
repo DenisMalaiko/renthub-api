@@ -53,6 +53,28 @@ const productResolver = {
                 throw err;
             }
         },
+        deleteProduct: async (_, { productId }, context) => {
+            console.log("DELETE PRODUCT ", productId)
+
+            const { req } = context;
+
+            if(!req.isAuth) {
+                throw new Error("Unauthenticated!")
+            }
+
+            try {
+                console.log("TRY")
+                const product = await Product;
+                await product.findByIdAndDelete(productId);
+
+                return {
+                    status: 200,
+                    message: "Product has been successfully deleted!"
+                }
+            } catch (err) {
+                throw err;
+            }
+        }
     }
 }
 

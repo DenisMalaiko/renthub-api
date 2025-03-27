@@ -1,27 +1,6 @@
-import Event from "../../models/event.js";
 import User from "../../models/user.js";
 import Category from "../../models/category.js";
 import {dateToString} from "../../helpers/date.js";
-
-const transformEvent = event => {
-    return {
-        ...event._doc,
-        _id: event.id,
-        date: dateToString(event._doc.date),
-        creator: user.bind(this, event._doc.creator)
-    };
-}
-
-const transformBooking = booking => {
-    return {
-        id: booking.id,
-        ...booking._doc,
-        user: user.bind(this, booking._doc.user),
-        event: singleEvent.bind(this, booking._doc.event),
-        createdAt: dateToString(booking._doc.createdAt),
-        updatedAt: dateToString(booking._doc.updatedAt)
-    }
-}
 
 const transformProduct = product => {
     return {
@@ -29,26 +8,6 @@ const transformProduct = product => {
         ...product._doc,
         user: user.bind(this, product._doc.user),
         categories: category.bind(this, product._doc.categories)
-    }
-}
-
-const events = async eventsIds => {
-    try {
-        const events = await Event.find({_id: {$in: eventsIds}})
-        return events.map(event => {
-            return transformEvent(event);
-        })
-    } catch (error) {
-        throw error
-    }
-}
-
-const singleEvent = async eventId => {
-    try {
-        const event = await Event.findById(eventId);
-        return transformEvent(event);
-    } catch (err) {
-        throw err;
     }
 }
 
@@ -77,9 +36,5 @@ const category = async categoriesIds => {
 }
 
 export {
-    events,
-    singleEvent,
-    transformEvent,
-    transformBooking,
     transformProduct
 }
