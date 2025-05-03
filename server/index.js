@@ -46,21 +46,10 @@ mongoose.connect(
 
         await server.start();
 
-        const allowedOrigins = [
-            "http://localhost:3000",
-            "https://renthub-official.netlify.app/",
-        ];
-
         server.applyMiddleware({
             app,
             cors: {
-                origin: (origin, callback) => {
-                    if (!origin || allowedOrigins.includes(origin)) {
-                        callback(null, true);
-                    } else {
-                        callback(new Error("Not allowed by CORS"));
-                    }
-                },
+                origin: "https://renthub-official.netlify.app/", // Вказуємо конкретний origin
                 credentials: true, // Дозволяємо куки та заголовки авторизації
                 allowedHeaders: ["Content-Type", "Authorization", "Apollo-Require-Preflight"],
             },
