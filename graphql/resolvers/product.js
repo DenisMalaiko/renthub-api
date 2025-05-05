@@ -13,6 +13,14 @@ const productResolver = {
                 throw err;
             }
         },
+        product: async (_, { productId }, context) => {
+            try {
+                const product = await Product.findById(productId);
+                return transformProduct(product);
+            } catch (err) {
+                throw err;
+            }
+        },
         productsByUser: async (_, { userId }, context) => {
             const { req } = context;
 

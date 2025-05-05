@@ -69,10 +69,7 @@ const typeDefs = gql`
             status: Float!
             message: String!
         }
-       
         
-        
-       
         
         input CityInput {
             cityId: String!
@@ -119,6 +116,7 @@ const typeDefs = gql`
             login(email: String!, password: String!): UserResponse
             
             products: [Product!]!
+            product(productId: String!): Product!
             productsByUser(userId: String!): [Product!]!
             
             categories: [Category!]!
