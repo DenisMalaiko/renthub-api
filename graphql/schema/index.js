@@ -15,6 +15,7 @@ const typeDefs = gql`
             login: String!
             email: String!
             city: City!
+            role: String!
             password: String
         }
         
@@ -49,6 +50,7 @@ const typeDefs = gql`
             login: String!
             email: String!
             city: CityType!
+            role: String!
         }
         
         type Category {
@@ -85,6 +87,7 @@ const typeDefs = gql`
             email: String!
             city: CityInput!
             password: String!
+            role: String!
         }
         
         input UserUpdateInput {
@@ -93,6 +96,7 @@ const typeDefs = gql`
             login: String!
             email: String!
             city: CityInput!
+            role: String!
         }
         
         input CategoryInput {

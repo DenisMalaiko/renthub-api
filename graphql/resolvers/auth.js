@@ -40,7 +40,8 @@ const authResolver = {
                 name: user.name,
                 login: user.login,
                 email: user.email,
-                city: user.city
+                city: user.city,
+                role: user.role
             }
         }
     },
@@ -60,6 +61,7 @@ const authResolver = {
                     login: userInput.login,
                     email: userInput.email,
                     city: userInput.city,
+                    role: userInput.role,
                     password: hashedPassword,
                 });
 
@@ -89,6 +91,7 @@ const authResolver = {
                         login: userUpdateInput.login,
                         email: userUpdateInput.email,
                         city: userUpdateInput.city,
+                        role: userUpdateInput.role
                     },
                     {new: true}
                 );

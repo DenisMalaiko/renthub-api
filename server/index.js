@@ -13,6 +13,14 @@ import isAuth from "../middleware/is-auth.js";
 const app = express();
 const port = process.env.PORT || 8080;
 
+app.use(cors({
+    origin: [
+        "http://localhost:3000",
+        "https://renthub-official.netlify.app"
+    ],
+    credentials: true
+}));
+
 app.use(graphqlUploadExpress({
     maxFileSize: 10000000,
     maxFiles: 1
@@ -90,6 +98,7 @@ app.get('/searchCity', async (req, res) => {
     const url = `http://api.geonames.org/searchJSON?q=${city}&username=Renthub`;
 
     try {
+        console.log("START FETCH")
         const response = await fetch(url);
         const data = await response.json();
         const result = data.geonames
@@ -105,6 +114,7 @@ app.get('/searchCity', async (req, res) => {
             .filter((item, index, self) => index === self.findIndex((t) => t.fullAddress === item.fullAddress))
             .slice(0, 5);
 
+        console.log("DONE ", result)
         res.json(result);
     } catch (error) {
         console.error('Error fetching place:', error);
