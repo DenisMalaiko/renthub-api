@@ -1,6 +1,6 @@
 import User from "../../models/user.js";
 import Category from "../../models/category.js";
-import {dateToString} from "../../helpers/date.js";
+import Product from "../../models/product.js";
 
 const transformProduct = product => {
     return {
@@ -8,6 +8,15 @@ const transformProduct = product => {
         ...product._doc,
         user: user.bind(this, product._doc.user),
         categories: category.bind(this, product._doc.categories)
+    }
+}
+
+const transformBooking = booking => {
+    return {
+        id: booking.id,
+        ...booking._doc,
+        user: user.bind(this, booking._doc.user),
+        product: product.bind(this, booking._doc.product)
     }
 }
 
@@ -35,6 +44,20 @@ const category = async categoriesIds => {
     }
 }
 
+const product = async productId => {
+    try {
+        const product = await Product.findById(productId);
+        return {
+            ...product._doc,
+            _id: product.id,
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 export {
-    transformProduct
+    transformProduct,
+    transformBooking
 }
