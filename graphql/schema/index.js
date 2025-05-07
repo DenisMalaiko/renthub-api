@@ -2,7 +2,8 @@ import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
         scalar Upload
-        
+        scalar Date
+
         type Photo {
             id: ID!
             filename: String!
@@ -71,6 +72,15 @@ const typeDefs = gql`
             status: Float!
             message: String!
         }
+
+        type Booking {
+            _id: ID
+            startDate: Date!
+            endDate: Date!
+            createdAt: Date!
+            user: User!
+            product: Product!
+        }
         
         
         input CityInput {
@@ -111,6 +121,14 @@ const typeDefs = gql`
             categories: [String]
         }
         
+        input BookingInput {
+            product: String!
+            user: String!
+            startDate: Date!
+            endDate: Date!
+            createdAt: Date!
+        }
+        
        
         
         
@@ -134,6 +152,8 @@ const typeDefs = gql`
             
             createProduct(productInput: ProductInput!): Product!
             deleteProduct(productId: String!): Response!
+            
+            bookProduct(bookingInput: BookingInput!): Booking!
             
             uploadPhoto(photo: Upload!): Photo!
         }
