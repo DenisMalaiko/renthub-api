@@ -142,6 +142,8 @@ const typeDefs = gql`
             productsByUser(userId: String!): [Product!]!
             
             categories: [Category!]!
+            
+            bookingsByUser(userId: String!): [Booking!]!
         }
         
         type Mutation {

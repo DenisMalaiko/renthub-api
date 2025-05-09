@@ -1,5 +1,6 @@
 import Product from "../../models/product.js";
 import { transformProduct } from "./merge.js";
+import {ApolloError} from "apollo-server-express";
 
 const productResolver = {
     Query: {
@@ -25,7 +26,7 @@ const productResolver = {
             const { req } = context;
 
             if(!req.isAuth) {
-                throw new Error("Unauthenticated!")
+                throw new ApolloError('Authentication failed - User not authenticated', 401);
             }
 
             try {
@@ -43,7 +44,7 @@ const productResolver = {
             const { req } = context;
 
             if(!req.isAuth) {
-                throw new Error("Unauthenticated!")
+                throw new ApolloError('Authentication failed - User not authenticated', 401);
             }
 
             try {
