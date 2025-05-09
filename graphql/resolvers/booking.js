@@ -1,9 +1,26 @@
 import Booking from '../../models/booking.js';
-import { transformBooking } from './merge.js';
+import {transformBooking} from './merge.js';
 import { ApolloError } from 'apollo-server-express';
 
 const bookingResolver = {
     Query: {
+        bookingsByUser: async (_, { userId }, context) => {
+            console.log("BOOKINGS BY USER ", userId)
+            const { req } = context;
+
+            if(!req.isAuth) {
+                throw new ApolloError('Authentication failed - User not authenticated', 401);
+            }
+
+            try {
+                const bookings = await Booking.find({ user: userId });
+                return bookings.map(booking => {
+                    return transformBooking(booking)
+                });
+            } catch (err) {
+                throw err;
+            }
+        },
     },
     Mutation: {
         bookProduct: async (_, { bookingInput }, context) => {
