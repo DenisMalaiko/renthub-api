@@ -15,7 +15,8 @@ const transformBooking = booking => {
     return {
         id: booking.id,
         ...booking._doc,
-        user: user.bind(this, booking._doc.user),
+        owner: user.bind(this, booking._doc.owner),
+        renter: user.bind(this, booking._doc.renter),
         product: product.bind(this, booking._doc.product)
     }
 }

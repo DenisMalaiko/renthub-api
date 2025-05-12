@@ -22,7 +22,7 @@ const productResolver = {
                 throw err;
             }
         },
-        productsByUser: async (_, { userId }, context) => {
+        productsByUser: async (_, { ownerId }, context) => {
             const { req } = context;
 
             if(!req.isAuth) {
@@ -30,8 +30,8 @@ const productResolver = {
             }
 
             try {
-                const products = await Product.find({ user: userId });
-                return products.map(product => {
+                const products = await Product.find({ owner: ownerId });
+                return products.map(product => { 
                     return transformProduct(product)
                 });
             } catch (err) {

@@ -4,8 +4,7 @@ import { ApolloError } from 'apollo-server-express';
 
 const bookingResolver = {
     Query: {
-        bookingsByUser: async (_, { userId }, context) => {
-            console.log("BOOKINGS BY USER ", userId)
+        bookingsByUser: async (_, { renterId }, context) => {
             const { req } = context;
 
             if(!req.isAuth) {
@@ -13,7 +12,7 @@ const bookingResolver = {
             }
 
             try {
-                const bookings = await Booking.find({ user: userId });
+                const bookings = await Booking.find({ renter: renterId });
                 return bookings.map(booking => {
                     return transformBooking(booking)
                 });
@@ -36,7 +35,8 @@ const bookingResolver = {
                     endDate: bookingInput.endDate,
                     createdAt: bookingInput.createdAt,
                     product: bookingInput.product,
-                    user: bookingInput.user
+                    owner: bookingInput.owner,
+                    renter: bookingInput.renter
                 });
 
                 const result = await booking.save();
@@ -44,6 +44,26 @@ const bookingResolver = {
             } catch (err) {
                 throw new ApolloError('Failed to create booking', 400);
             }
+        },
+        deleteBooking: async (_, { bookingId }, context) => {
+            const { req } = context;
+
+            if(!req.isAuth) {
+                throw new ApolloError('Authentication failed - User not authenticated', 401);
+            }
+
+            try {
+                const booking = await Booking;
+                await booking.findByIdAndDelete(bookingId);
+
+                return {
+                    status: 200,
+                    message: "Booking has been successfully deleted!"
+                }
+            } catch (err) {
+                throw new ApolloError('Failed to create booking', 400);
+            }
+
         }
     }
 }

@@ -19,7 +19,11 @@ const bookingSchema = new Schema({
         type: [Schema.Types.ObjectId],
         ref: "Product"
     },
-    user: {
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    },
+    renter: {
         type: Schema.Types.ObjectId,
         ref: "User"
     }
