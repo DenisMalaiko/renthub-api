@@ -78,7 +78,8 @@ const typeDefs = gql`
             startDate: Date!
             endDate: Date!
             createdAt: Date!
-            user: User!
+            owner: User!
+            renter: User!
             product: Product!
         }
         
@@ -123,7 +124,8 @@ const typeDefs = gql`
         
         input BookingInput {
             product: String!
-            user: String!
+            owner: String!
+            renter: String!
             startDate: Date!
             endDate: Date!
             createdAt: Date!
@@ -139,11 +141,11 @@ const typeDefs = gql`
             
             products: [Product!]!
             product(productId: String!): Product!
-            productsByUser(userId: String!): [Product!]!
+            productsByUser(ownerId: String!): [Product!]!
             
             categories: [Category!]!
             
-            bookingsByUser(userId: String!): [Booking!]!
+            bookingsByUser(renterId: String!): [Booking!]!
         }
         
         type Mutation {
@@ -156,6 +158,7 @@ const typeDefs = gql`
             deleteProduct(productId: String!): Response!
             
             bookProduct(bookingInput: BookingInput!): Booking!
+            deleteBooking(bookingId: String!): Response!
             
             uploadPhoto(photo: Upload!): Photo!
         }
