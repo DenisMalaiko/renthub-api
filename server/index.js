@@ -1,11 +1,8 @@
 import express from "express";
 import cors from "cors";
-import { graphqlHTTP } from "express-graphql";
 import mongoose from "mongoose";
 import { ApolloServer} from "apollo-server-express";
 import { graphqlUploadExpress } from "graphql-upload";
-import { GridFSBucket } from "mongodb";
-//import graphQlSchema from "../graphql/schema/index.js";
 import typeDefs from "../graphql/schema/index.js";
 import graphQlResolvers from "../graphql/resolvers/index.js";
 import isAuth from "../middleware/is-auth.js";
@@ -25,14 +22,10 @@ app.use(graphqlUploadExpress({
     maxFileSize: 10000000,
     maxFiles: 1
 }));
+
 app.use(express.json());
 app.use(isAuth);
 
-/*app.use("/graphql", graphqlHTTP({
-    schema: graphQlSchema,
-    rootValue: graphQlResolvers,
-    graphiql: true,
-}));*/
 
 mongoose.connect(
     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@renthub.de39wzv.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority&appName=${process.env.MONGO_DB}`,
@@ -94,11 +87,9 @@ app.get('/image/:id', async (req, res) => {
 
 app.get('/searchCity', async (req, res) => {
     const city = req.query.city;
-    console.log("CITY ", city)
     const url = `http://api.geonames.org/searchJSON?q=${city}&username=Renthub`;
 
     try {
-        console.log("START FETCH")
         const response = await fetch(url);
         const data = await response.json();
         const result = data.geonames
@@ -114,7 +105,6 @@ app.get('/searchCity', async (req, res) => {
             .filter((item, index, self) => index === self.findIndex((t) => t.fullAddress === item.fullAddress))
             .slice(0, 5);
 
-        console.log("DONE ", result)
         res.json(result);
     } catch (error) {
         console.error('Error fetching place:', error);

@@ -2,6 +2,7 @@
   "env": {
     "MONGO_USER": "DenisMalaiko",
     "MONGO_PASSWORD": "PDZqTQidkRfcAljb",
-    "MONGO_DB": "renthub"
+    "MONGO_DB": "renthub",
+    "OPENAI_API_KEY": "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"
   }
 }

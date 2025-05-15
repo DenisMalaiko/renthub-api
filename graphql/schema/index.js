@@ -146,6 +146,8 @@ const typeDefs = gql`
             categories: [Category!]!
             
             bookingsByUser(renterId: String!): [Booking!]!
+
+            askLangChain(prompt: String!): String!
         }
         
         type Mutation {

@@ -3,6 +3,7 @@ import categoryResolver from "./caregory.js";
 import productResolver from "./product.js";
 import photoResolver from "./photo.js";
 import bookingResolver from "./booking.js";
+import langChainResolver from "./langChain.js";
 
 const rootResolver = {
     Query: {
@@ -10,13 +11,15 @@ const rootResolver = {
         ...authResolver.Query,
         ...categoryResolver.Query,
         ...bookingResolver.Query,
+        ...langChainResolver.Query,
     },
     Mutation: {
         ...productResolver.Mutation,
         ...authResolver.Mutation,
         ...categoryResolver.Mutation,
         ...photoResolver.Mutation,
-        ...bookingResolver.Mutation
+        ...bookingResolver.Mutation,
+        ...langChainResolver.Mutation,
     }
 }
 
