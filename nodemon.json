@@ -3,6 +3,7 @@
     "MONGO_USER": "DenisMalaiko",
     "MONGO_PASSWORD": "PDZqTQidkRfcAljb",
     "MONGO_DB": "renthub",
-    "OPENAI_API_KEY": "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"
+    "OPENAI_API_KEY": "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",
+    "MONGO_URI": "mongodb+srv://DenisMalaiko:PDZqTQidkRfcAljb@renthub.de39wzv.mongodb.net/renthub?retryWrites=true&w=majority&appName=renthub"
   }
 }
