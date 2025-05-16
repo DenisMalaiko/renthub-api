@@ -1,6 +1,12 @@
 import Product from "../../models/product.js";
 import { transformProduct } from "./merge.js";
-import {ApolloError} from "apollo-server-express";
+import { ApolloError } from "apollo-server-express";
+
+
+import { OpenAIEmbeddings } from "@langchain/openai";
+const embeddings = new OpenAIEmbeddings({
+    openAIApiKey: process.env.OPENAI_API_KEY,
+});
 
 const productResolver = {
     Query: {
@@ -48,8 +54,40 @@ const productResolver = {
             }
 
             try {
+                const { name, description, price, owner, categories, photo } = productInput;
+
+                // Формуємо текст для embedding
+                const text = `${name}. ${description}. Price: ${price}`;
+
+                const [embedding] = await embeddings.embedDocuments([text]);
+
+                const product = new Product({
+                    name,
+                    description,
+                    price,
+                    owner,
+                    categories,
+                    photo,
+                    embedding
+                });
+
+                const result = await product.save();
+                return transformProduct(result);
+            } catch (err) {
+                throw err;
+            }
+        },
+        /*createProduct: async (_, { productInput }, context) => {
+            const { req } = context;
+
+            if(!req.isAuth) {
+                throw new ApolloError('Authentication failed - User not authenticated', 401);
+            }
+
+            try {
                 const product = await new Product({
                     name: productInput.name,
+                    description: productInput.description,
                     price: productInput.price,
                     user: productInput.user,
                     categories: productInput.categories,
@@ -61,7 +99,7 @@ const productResolver = {
             } catch (err) {
                 throw err;
             }
-        },
+        },*/
         deleteProduct: async (_, { productId }, context) => {
             console.log("DELETE PRODUCT ", productId)
 

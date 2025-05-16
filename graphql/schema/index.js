@@ -62,9 +62,10 @@ const typeDefs = gql`
         type Product {
             _id: ID
             name: String!
+            description: String!
             price: Float!
             photo: String!
-            user: User!
+            owner: User!
             categories: [Category!]
         }
         
@@ -116,9 +117,10 @@ const typeDefs = gql`
 
         input ProductInput {
             name: String!
+            description: String!
             price: Float!
             photo: String!
-            user: String!
+            owner: String!
             categories: [String]
         }
         

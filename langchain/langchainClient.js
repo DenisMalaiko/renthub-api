@@ -1,13 +1,28 @@
-import { ChatOpenAI } from "@langchain/openai";
+import { llm } from "./llm.js";
+import { vectorStore } from "./vectorStore.js";
 import { HumanMessage } from "@langchain/core/messages";
 
 
-const llm = new ChatOpenAI({
-    temperature: 0.7,
-    apiKey: process.env.OPENAI_API_KEY,
-});
+export async function askLLM(prompt, k = 3) {
+    console.log("ASK LLM: ", prompt)
 
-export async function askLLM(prompt) {
+    const docs = await vectorStore.similaritySearch(prompt, k);
+    console.log("DOCS: ", docs);
+
+    const context = docs.map(d => d.pageContent).join("\n\n");
+    console.log("CONTEXT: ", context);
+
+    const fullPrompt = `Ось інформація з документів:\n\n${context}\n\nПитання: ${prompt}`;
+    console.log("FULL PROMPT: ", fullPrompt);
+
+    const res = await llm.invoke([new HumanMessage(fullPrompt)]);
+    console.log("RESPONSE ASK LLM: ", res.content);
+
+    return res.content;
+}
+
+
+/*export async function askLLM(prompt) {
     console.log("ASK LLM: ", prompt)
 
     const res = await llm.invoke([
@@ -20,4 +35,4 @@ export async function askLLM(prompt) {
 
     console.log("RESPONSE ASK LLM: ", res.content)
     return res.content;
-}
+}*/

@@ -6,7 +6,7 @@ const transformProduct = product => {
     return {
         id: product.id,
         ...product._doc,
-        user: user.bind(this, product._doc.user),
+        owner: user.bind(this, product._doc.owner),
         categories: category.bind(this, product._doc.categories)
     }
 }

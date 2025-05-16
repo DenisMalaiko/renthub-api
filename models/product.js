@@ -7,15 +7,19 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    },
     price: {
-      type: Number,
-      required: true
+        type: Number,
+        required: true
     },
     photo: {
-      type: String,
-      required: false
+        type: String,
+        required: false
     },
-    user: {
+    owner: {
         type: Schema.Types.ObjectId,
         ref: "User"
     },
@@ -23,6 +27,10 @@ const productSchema = new Schema({
         type: [Schema.Types.ObjectId],
         ref: "Category"
     },
+    embedding: {
+        type: [Number],
+        required: false
+    }
 });
 
 export default mongoose.model("Product", productSchema);
