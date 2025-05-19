@@ -1,9 +1,0 @@
-{
-  "env": {
-    "MONGO_USER": "DenisMalaiko",
-    "MONGO_PASSWORD": "PDZqTQidkRfcAljb",
-    "MONGO_DB": "renthub",
-    "OPENAI_API_KEY": "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",
-    "MONGO_URI": "mongodb+srv://DenisMalaiko:PDZqTQidkRfcAljb@renthub.de39wzv.mongodb.net/renthub?retryWrites=true&w=majority&appName=renthub"
-  }
-}
