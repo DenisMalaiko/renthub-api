@@ -6,19 +6,21 @@ import { HumanMessage } from "@langchain/core/messages";
 export async function askLLM(prompt, k = 3) {
     console.log("ASK LLM: ", prompt)
 
-    const docs = await vectorStore.similaritySearch(prompt, k);
-    console.log("DOCS: ", docs);
+    try {
+        const docs = await vectorStore.similaritySearch(prompt, k);
+        console.log("DOCS: ", docs);
 
-    const context = docs.map(d => d.pageContent).join("\n\n");
-    console.log("CONTEXT: ", context);
+        const context = docs.map(d => d.pageContent).join("\n\n");
 
-    const fullPrompt = `Ось інформація з документів:\n\n${context}\n\nПитання: ${prompt}`;
-    console.log("FULL PROMPT: ", fullPrompt);
+        const fullPrompt = `Ось інформація з документів:\n\n${context}\n\nПитання: ${prompt}`;
 
-    const res = await llm.invoke([new HumanMessage(fullPrompt)]);
-    console.log("RESPONSE ASK LLM: ", res.content);
+        const res = await llm.invoke([new HumanMessage(fullPrompt)]);
+        console.log("RESPONSE ASK LLM: ", res.content);
 
-    return res.content;
+        return res.content;
+    } catch (err) {
+        console.error("ERR: ", err)
+    }
 }
 
 

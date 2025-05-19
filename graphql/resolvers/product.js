@@ -48,12 +48,14 @@ const productResolver = {
     Mutation: {
         createProduct: async (_, { productInput }, context) => {
             const { req } = context;
+            console.log("CREATE PRODUCT ", productInput)
 
             if(!req.isAuth) {
                 throw new ApolloError('Authentication failed - User not authenticated', 401);
             }
 
             try {
+                console.log("START TRY")
                 const { name, description, price, owner, categories, photo } = productInput;
 
                 // Формуємо текст для embedding
