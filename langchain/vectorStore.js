@@ -14,7 +14,7 @@ const embeddings = new OpenAIEmbeddings({
 
 export const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
     collection,
-    indexName: "default", // Назва індексу в MongoDB Atlas
-    textKey: "name",
+    indexName: "default_1",
+    textKey: "description",
     embeddingKey: "embedding",
 });
