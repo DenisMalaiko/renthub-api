@@ -27,6 +27,10 @@ const productSchema = new Schema({
         type: [Schema.Types.ObjectId],
         ref: "Category"
     },
+    city: {
+        type: Object,
+        required: true
+    },
     embedding: {
         type: [Number],
         required: false
