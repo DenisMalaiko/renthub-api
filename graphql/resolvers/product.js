@@ -48,21 +48,15 @@ const productResolver = {
     Mutation: {
         createProduct: async (_, { productInput }, context) => {
             const { req } = context;
-            console.log("CREATE PRODUCT ", productInput)
 
             if(!req.isAuth) {
                 throw new ApolloError('Authentication failed - User not authenticated', 401);
             }
 
             try {
-                console.log("START TRY")
-                const { name, description, price, owner, categories, photo } = productInput;
-
-                // Формуємо текст для embedding
+                const { name, description, price, owner, categories, photo, city } = productInput;
                 const text = `${name}. ${description}. Price: ${price}`;
-
                 const [embedding] = await embeddings.embedDocuments([text]);
-
                 const product = new Product({
                     name,
                     description,
@@ -70,7 +64,8 @@ const productResolver = {
                     owner,
                     categories,
                     photo,
-                    embedding
+                    embedding,
+                    city
                 });
 
                 const result = await product.save();
@@ -79,32 +74,7 @@ const productResolver = {
                 throw err;
             }
         },
-        /*createProduct: async (_, { productInput }, context) => {
-            const { req } = context;
-
-            if(!req.isAuth) {
-                throw new ApolloError('Authentication failed - User not authenticated', 401);
-            }
-
-            try {
-                const product = await new Product({
-                    name: productInput.name,
-                    description: productInput.description,
-                    price: productInput.price,
-                    user: productInput.user,
-                    categories: productInput.categories,
-                    photo: productInput.photo
-                });
-
-                const result = await product.save();
-                return transformProduct(result);
-            } catch (err) {
-                throw err;
-            }
-        },*/
         deleteProduct: async (_, { productId }, context) => {
-            console.log("DELETE PRODUCT ", productId)
-
             const { req } = context;
 
             if(!req.isAuth) {
@@ -112,7 +82,6 @@ const productResolver = {
             }
 
             try {
-                console.log("TRY")
                 const product = await Product;
                 await product.findByIdAndDelete(productId);
 

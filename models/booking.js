@@ -3,12 +3,8 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const bookingSchema = new Schema({
-    startDate: {
-        type: Date,
-        required: true
-    },
-    endDate: {
-        type: Date,
+    range: {
+        type: Array,
         required: true
     },
     createdAt: {

@@ -67,6 +67,7 @@ const typeDefs = gql`
             photo: String!
             owner: User!
             categories: [Category!]
+            city: CityType!
         }
         
         type Response {
@@ -76,8 +77,7 @@ const typeDefs = gql`
 
         type Booking {
             _id: ID
-            startDate: Date!
-            endDate: Date!
+            range: [Date!]
             createdAt: Date!
             owner: User!
             renter: User!
@@ -122,14 +122,14 @@ const typeDefs = gql`
             photo: String!
             owner: String!
             categories: [String]
+            city: CityInput!
         }
         
         input BookingInput {
             product: String!
             owner: String!
             renter: String!
-            startDate: Date!
-            endDate: Date!
+            range: [Date!]
             createdAt: Date!
         }
         

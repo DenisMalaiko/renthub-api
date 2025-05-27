@@ -31,8 +31,7 @@ const bookingResolver = {
 
             try {
                 const booking = await new Booking({
-                    startDate: bookingInput.startDate,
-                    endDate: bookingInput.endDate,
+                    range: bookingInput.range,
                     createdAt: bookingInput.createdAt,
                     product: bookingInput.product,
                     owner: bookingInput.owner,
