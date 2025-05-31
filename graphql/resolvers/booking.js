@@ -5,6 +5,7 @@ import { ApolloError } from 'apollo-server-express';
 const bookingResolver = {
     Query: {
         bookingsByUser: async (_, { renterId }, context) => {
+            console.log("START bookingsByUser ", renterId)
             const { req } = context;
 
             if(!req.isAuth) {
