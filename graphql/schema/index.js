@@ -27,7 +27,6 @@ const typeDefs = gql`
             countryName: String!
             fullAddress: String!
         }
-       
         
         type AuthData {
             userId: ID!
@@ -57,6 +56,7 @@ const typeDefs = gql`
         type Category {
             _id: ID
             name: String!
+            icon: String!
         }
         
         type Product {
@@ -133,37 +133,37 @@ const typeDefs = gql`
             createdAt: Date!
         }
         
-       
-        
+        input ProductsBySearchInput {
+            categories: [String],
+            city: CityInput!
+            product: String!
+            range: [Date!]
+        }
         
         
         type Query {
             users: [User!]!
             login(email: String!, password: String!): UserResponse
-            
-            products: [Product!]!
+
             product(productId: String!): Product!
+            products: [Product!]!
             productsByUser(ownerId: String!): [Product!]!
+            productsBySearch(productsBySearchInput: ProductsBySearchInput): [Product!]!
+
+            bookingsByUser(renterId: String!): [Booking!]!
             
             categories: [Category!]!
-            
-            bookingsByUser(renterId: String!): [Booking!]!
-
             askLangChain(prompt: String!): String!
         }
         
         type Mutation {
             createUser(userInput: UserInput): User
             updateUser(userUpdateInput: UserUpdateInput): User
-            
             createCategory(categoryInput: CategoryInput): Category
-            
             createProduct(productInput: ProductInput!): Product!
             deleteProduct(productId: String!): Response!
-            
             bookProduct(bookingInput: BookingInput!): Booking!
             deleteBooking(bookingId: String!): Response!
-            
             uploadPhoto(photo: Upload!): Photo!
         }
         

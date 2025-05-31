@@ -1,4 +1,5 @@
 import Product from "../../models/product.js";
+import Booking from "../../models/booking.js";
 import { transformProduct } from "./merge.js";
 import { ApolloError } from "apollo-server-express";
 
@@ -44,6 +45,34 @@ const productResolver = {
                 throw err;
             }
         },
+        productsBySearch: async (_, { productsBySearchInput }, context) => {
+            const { categories, city, product, range } = productsBySearchInput;
+
+            try {
+                const products = await Product.find({
+                    categories: { $in: categories },
+                    'city.cityId': city.cityId,
+                    $or: [
+                        { name: { $regex: product, $options: 'i' } },
+                        { description: { $regex: product, $options: 'i' } }
+                    ]
+                });
+
+                const bookings = await Booking.find({
+                    range: { $in: range },
+                    product: { $in: products.map(product => product._id) }
+                }).select('product');
+
+                const bookedProducts = bookings.flatMap(booking => String(booking.product));
+                const result = products.filter(product => !bookedProducts.includes(String(product._id)));
+
+                return result.map(product => {
+                    return transformProduct(product)
+                });
+            } catch (err) {
+                throw err;
+            }
+        }
     },
     Mutation: {
         createProduct: async (_, { productInput }, context) => {
@@ -56,6 +85,7 @@ const productResolver = {
             try {
                 const { name, description, price, owner, categories, photo, city } = productInput;
                 const text = `${name}. ${description}. Price: ${price}`;
+                console.log("TEXT ", text);
                 const [embedding] = await embeddings.embedDocuments([text]);
                 const product = new Product({
                     name,

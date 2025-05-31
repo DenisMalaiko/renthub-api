@@ -10,9 +10,15 @@ export async function askLLM(prompt, k = 3) {
         const docs = await vectorStore.similaritySearch(prompt, k);
         console.log("DOCS: ", docs);
 
-        const context = docs.map(d => d.pageContent).join("\n\n");
+        const context = docs.map(d => {
+            return `Name: ${d.metadata.name}\nPrice: ${d.metadata.price}\nDescription: ${d.pageContent}`;
+        }).join("\n\n");
 
-        const fullPrompt = `Ось інформація з документів:\n\n${context}\n\nПитання: ${prompt}`;
+        const fullPrompt = `
+            You are a helpful and professional rental assistant for a platform that rents out various products for several days at a time
+            Here is the information from the product database:\n\n${context}\n\n
+            Question: ${prompt}\n\n
+            If the answer concerns the price, be sure to include it. All our prices are in USD and for one day.`;
 
         const res = await llm.invoke([new HumanMessage(fullPrompt)]);
         console.log("RESPONSE ASK LLM: ", res.content);
